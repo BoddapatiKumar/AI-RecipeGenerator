@@ -1,7 +1,18 @@
+import { useLogto } from "@logto/rn";
+import { useEffect } from "react";
 import { Text, View } from "react-native";
-import { Redirect } from 'expo-router'
 
 export default function Index() {
+  const { getIdTokenClaims, isAuthenticated } = useLogto();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getIdTokenClaims().then((userdata) => {
+        console.log(userdata);
+      });
+    }
+  }, [isAuthenticated, getIdTokenClaims]);
+
   return (
     <View
       style={{
@@ -18,7 +29,7 @@ export default function Index() {
       >
         CookMate app
       </Text>
-      <Redirect href={'/Landing'}/>
+      {/* <Redirect href={'/Landing'}/> */}
     </View>
   );
 }

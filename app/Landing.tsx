@@ -1,10 +1,13 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
-import { Marquee } from "@animatereactnative/marquee";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Colors from "@/services/Colors";
+import { Marquee } from "@animatereactnative/marquee";
+import { useLogto } from "@logto/rn";
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Landing() {
+  const { signIn, signOut, isAuthenticated } = useLogto();
+
   const imageList = [
     require("./../assets/images/1.jpg"),
     require("./../assets/images/2.jpg"),
@@ -16,6 +19,7 @@ export default function Landing() {
     require("./../assets/images/c2.jpg"),
     require("./../assets/images/c3.jpg"),
   ];
+
   return (
     <GestureHandlerRootView>
       <View>
@@ -64,7 +68,7 @@ export default function Landing() {
         <View
           style={{
             backgroundColor: Colors.WHITE,
-            height:'100%',
+            height: "100%",
             padding: 15,
           }}
         >
@@ -88,7 +92,10 @@ export default function Landing() {
           >
             Generate delicious recipees in seconds with the power of AI!! 🍔✨
           </Text>
-          <TouchableOpacity style={styles.button} onPress={()=>console.log('clicked')}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={async () => signIn("exp://192.168.1.11:8082")}
+          >
             <Text
               style={{
                 textAlign: "center",
@@ -120,7 +127,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.PRIMARY,
     padding: 15,
     borderRadius: 15,
-    width: 350,
+    width: 300,
     marginLeft: 20,
     marginTop: 30,
   },
