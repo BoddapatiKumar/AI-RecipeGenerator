@@ -1,12 +1,58 @@
+import { UserContext } from "@/context/UserContext";
 import Colors from "@/services/Colors";
+import GlobalApi from "@/services/GlobalApi";
 import { Marquee } from "@animatereactnative/marquee";
 import { useLogto } from "@logto/rn";
-import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useRouter } from "expo-router";
+import { useContext, useEffect } from "react";
+
+import {
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Landing() {
   const { signIn, signOut, isAuthenticated } = useLogto();
+  const { getIdTokenClaims } = useLogto();
+  const {user,setUser}=useContext(UserContext);
+
+  const router=useRouter();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getIdTokenClaims().then(async (userData) => {
+        console.log(userData);
+
+        if (userData?.email) {
+          const result = GlobalApi.getUserByEmail(userData?.email);
+          console.log((await result).data.data); //to get strapi data in response
+          if (!(await result).data.data) {
+            //Insert new Record
+            const data = {
+              email: userData?.email,
+              name: userData?.name,
+              picture: userData?.picture,
+            };
+
+            const response = await GlobalApi.createUser(data);
+            console.log(response?.data?.data);
+            setUser(response?.data?.data);
+            router.replace('/(tabs)/Home');
+          }
+          else{
+            setUser((await result)?.data?.data[0]);
+            router.replace('/(tabs)/Home');
+          }
+        }
+      });
+    }
+  }, [isAuthenticated]);
 
   const imageList = [
     require("./../assets/images/1.jpg"),
@@ -106,6 +152,7 @@ export default function Landing() {
               Get Started
             </Text>
           </TouchableOpacity>
+          {/* <Button title="Sign out" onPress={async () => signOut()} /> */}
         </View>
       </View>
     </GestureHandlerRootView>

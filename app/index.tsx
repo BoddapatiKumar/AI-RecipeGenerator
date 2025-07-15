@@ -1,18 +1,8 @@
-import { useLogto } from "@logto/rn";
-import { useEffect } from "react";
+
 import { Text, View } from "react-native";
 
 export default function Index() {
-  const { getIdTokenClaims, isAuthenticated } = useLogto();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      getIdTokenClaims().then((userdata) => {
-        console.log(userdata);
-      });
-    }
-  }, [isAuthenticated, getIdTokenClaims]);
-
+  
   return (
     <View
       style={{

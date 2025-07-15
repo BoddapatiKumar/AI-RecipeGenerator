@@ -1,8 +1,12 @@
+import { UserContext } from "@/context/UserContext";
+import { LogtoConfig, LogtoProvider, UserScope } from "@logto/rn";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import { LogtoProvider, LogtoConfig } from "@logto/rn";
+import { useState } from "react";
 
 export default function RootLayout() {
+  const [user, setUser] = useState();
+
   const [loaded, error] = useFonts({
     "outfit-semibold": require("./../assets/fonts/Outfit-SemiBold.ttf"),
     "outfit-Bold": require("./../assets/fonts/Outfit-Bold.ttf"),
@@ -10,20 +14,29 @@ export default function RootLayout() {
   });
 
   const config: LogtoConfig = {
-    endpoint: "https://q26ehk.logto.app/",
-    appId: "cl39jz3yla2ep0bewqvlm",
+    endpoint: "https://3kqfak.logto.app/",
+    appId: "2ynayj46l7hdsxjmy2cnq",
+    scopes: [UserScope.Email],
   };
 
   return (
     <LogtoProvider config={config}>
-      <Stack>
-        <Stack.Screen
-          name="Landing"
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack>
+      <UserContext.Provider value={{ user, setUser }}>
+        <Stack>
+          <Stack.Screen
+            name="Landing"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack>
+      </UserContext.Provider>
     </LogtoProvider>
   );
 }
