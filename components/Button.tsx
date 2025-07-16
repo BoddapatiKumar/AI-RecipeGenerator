@@ -1,9 +1,9 @@
-import {  Text, TouchableOpacity } from "react-native";
+import {  ActivityIndicator, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import Colors from "@/services/Colors";
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const Button = ({ label, onPress,icon }: any) => {
+const Button = ({ label, onPress,icon ,loading=false}: any) => {
   return (
    <TouchableOpacity
         style={{
@@ -18,8 +18,10 @@ const Button = ({ label, onPress,icon }: any) => {
           justifyContent:'center'
         }}
         onPress={onPress}
+        disabled={loading}
       >
-        <Ionicons name={icon} size={20} color="white" />
+        {loading ? <ActivityIndicator color={Colors.WHITE} /> :
+        <Ionicons name={icon} size={20} color="white" />}
         <Text
           style={{
             textAlign: "center",

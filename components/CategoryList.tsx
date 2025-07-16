@@ -1,9 +1,18 @@
-import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import GlobalApi from "@/services/GlobalApi";
+import { useRouter } from "expo-router";
 
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     getCategoryList();
@@ -26,13 +35,26 @@ const CategoryList = () => {
         data={categories}
         numColumns={4}
         renderItem={({ item, index }: any) => (
-          <View key={index} style={styles.categoryContainer}>
+          <TouchableOpacity
+            key={index}
+            style={styles.categoryContainer}
+            onPress={()=>router.push({
+              pathname:'/recipe-by-category',
+              params:{
+                categoryName:item?.name
+              },
+            })}
+          >
             <Image source={{ uri: item?.image?.url }} style={styles.image} />
-            <Text style={{
-                fontFamily:'outfit',
-                marginTop:3,
-            }}>{item?.name}</Text>
-          </View>
+            <Text
+              style={{
+                fontFamily: "outfit",
+                marginTop: 3,
+              }}
+            >
+              {item?.name}
+            </Text>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -49,12 +71,12 @@ const styles = StyleSheet.create({
   image: {
     width: 40,
     height: 40,
-    borderRadius:25
+    borderRadius: 25,
   },
-  categoryContainer:{
-    flex:1,
-    display:'flex',
-    alignItems:'center',
-    marginTop:8,
-  }
+  categoryContainer: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    marginTop: 8,
+  },
 });
