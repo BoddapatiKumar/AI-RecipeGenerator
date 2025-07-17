@@ -1,28 +1,36 @@
 import CategoryList from "@/components/CategoryList";
 import CreateRecipe from "@/components/CreateRecipe";
 import IntroHeader from "@/components/IntroHeader";
+import LatestRecipes from "@/components/LatestRecipes";
 import Colors from "@/services/Colors";
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { FlatList, ScrollView,} from "react-native";
 
 const Home = () => {
   return (
-    <ScrollView
-      style={{
-        height: "100%",
-        backgroundColor: Colors.WHITE,
-        padding:25
-      }}
-    >
-      {/* Intro */}
-      <IntroHeader />
+    <FlatList
+      data={[]}
+      renderItem={() => null}
+      ListHeaderComponent={
+        <ScrollView
+          style={{
+            height: "100%",
+            backgroundColor: Colors.WHITE,
+            padding: 25,
+          }}
+        >
+          {/* Intro */}
+          <IntroHeader />
 
-      {/* RecipeGenerator Ui */}
-      <CreateRecipe />
+          {/* RecipeGenerator Ui */}
+          <CreateRecipe />
 
-      {/* Categories */}
-      <CategoryList />
-    </ScrollView>
+          {/* Categories */}
+          <CategoryList />
+          <LatestRecipes />
+        </ScrollView>
+      }
+    />
   );
 };
 

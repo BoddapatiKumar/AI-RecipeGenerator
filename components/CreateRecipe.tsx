@@ -14,6 +14,7 @@ import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
 import Prompt from "./../services/Prompt";
 import Button from "./Button";
 import { UserContext } from "@/context/UserContext";
+import { useRouter } from "expo-router";
 
 const CreateRecipe = () => {
   const [input, setInput] = useState<string>("");
@@ -21,6 +22,7 @@ const CreateRecipe = () => {
   const [loading, setLoading] = useState(false);
   const actionSheetRef = useRef<ActionSheetRef>(null);
   const {user}=useContext(UserContext);
+  const router=useRouter();
 
   const onGenerate = async () => {
     if (!input) {
@@ -65,8 +67,14 @@ const CreateRecipe = () => {
       const parsed = JSON.parse(raw);
       const imageUrl = await generateRecipeImage(parsed.imagePrompt);
       const insertedRecord = await saveToDb(parsed, imageUrl);
-
       console.log("✅ Saved Recipe:", insertedRecord);
+
+      router.push({
+        pathname:'/recipe-detail',
+        params:{
+          recipeData:JSON.stringify(insertedRecord),
+        }
+      })
     } catch (e) {
       console.error("🚨 Failed to generate full recipe", e);
       Alert.alert("Error parsing complete recipe or saving to DB");

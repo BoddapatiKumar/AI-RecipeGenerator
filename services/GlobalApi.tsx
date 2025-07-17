@@ -10,7 +10,7 @@ const axiosClient = axios.create({
 
 const openai = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.EXPO_PUBLIC_OPENROUTER_API_KEY,
+  apiKey: process.env.EXPO_PUBLIC_OPENROUTR_API_KEY,
 });
 
 const createUser = (data: any) =>
@@ -25,7 +25,11 @@ const createRecipe = (data: any) =>
   axiosClient.post("/recipes", { data: data });
 
 const getRecipeByCategory = (category: any) =>
-  axiosClient.get("/recipes?filter[category][$contains]=" + category);
+  axiosClient.get("/recipes?filters[category][$contains]=" + category);
+
+const getAllRecipeList=()=>axiosClient.get('/recipes?sort[0]=id:desc');
+
+const getAllRecipesByLimit=(limit:any)=>axiosClient.get('/recipes?sort[0]=id:desc&pagination[start]=1&pagination[limit]='+limit);
 
 const AiModel = async (prompt: string) =>
   await openai.chat.completions.create({
@@ -60,4 +64,6 @@ export default {
   generateAiImage,
   createRecipe,
   getRecipeByCategory,
+  getAllRecipeList,
+  getAllRecipesByLimit
 };

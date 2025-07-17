@@ -14,9 +14,11 @@ export default {
 
   GENERATE_COMPLETE_RECIPE: ` 
 
-        - As per recipe Name and Description and include both of them also, Give me all list of ingredients as ingredient ,
+        - As per recipeName and Description and include both of them also as recipeName,description and Give me all list of ingredients as ingredient ,
 
-        - emoji icons for each ingredient as icon, quantity as quantity, along with detail step by step  recipe as steps
+        - emoji icons for each ingredient as icon, quantity as quantity,ingredient name as name
+
+        - along with detail step by step  recipe as steps
 
         - Total Calories as calories (only number), Minutes to cook as cookTime and serving number as serveTo in number format
 

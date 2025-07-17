@@ -1,10 +1,9 @@
 import { View, Text, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
-import Colors from "@/services/Colors";
 import GlobalApi from "@/services/GlobalApi";
-import RecipeCard from "@/components/RecipeCard";
+import HomeRecipeCard from "./HomeRecipeCard";
 
-const Explore = () => {
+const LatestRecipes = () => {
   const [recipeList, setRecipeList] = useState();
 
   useEffect(() => {
@@ -12,40 +11,30 @@ const Explore = () => {
   }, []);
 
   const getAllRecipes = async () => {
-    const result = await GlobalApi.getAllRecipeList();
-    // console.log(result?.data.data);
+    const result = await GlobalApi.getAllRecipesByLimit(10);
+    // console.log(result?.data?.data);
     setRecipeList(result?.data?.data);
   };
-
   return (
     <View
       style={{
-        padding: 20,
-        backgroundColor: Colors.WHITE,
-        height: "100%",
+        marginTop: 20,
       }}
     >
       <Text
         style={{
           fontFamily: "outfit-Bold",
-          fontSize: 30,
+          fontSize: 20,
         }}
       >
-        Explore
+        LatestRecipes
       </Text>
-
       <FlatList
-        numColumns={2}
-        showsVerticalScrollIndicator={false}
+      horizontal={true}
         data={recipeList}
         renderItem={({ item, index }) => (
-          <View
-            key={index}
-            style={{
-              flex: 1,
-            }}
-          >
-            <RecipeCard recipe={item} />
+          <View key={index}>
+            <HomeRecipeCard recipe={item}/>
           </View>
         )}
       />
@@ -53,4 +42,4 @@ const Explore = () => {
   );
 };
 
-export default Explore;
+export default LatestRecipes;

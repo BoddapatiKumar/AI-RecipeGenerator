@@ -1,4 +1,5 @@
 import { UserContext } from "@/context/UserContext";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { LogtoConfig, LogtoProvider, UserScope } from "@logto/rn";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -40,6 +41,15 @@ export default function RootLayout() {
             options={{
               headerTransparent:true,
               headerTitle:''
+            }}
+          />
+          <Stack.Screen
+            name="recipe-detail/index"
+            options={{
+              headerTitle:'Details',
+              headerRight:()=>(
+                <Ionicons name="share" size={24} color="black" />
+              )
             }}
           />
           
