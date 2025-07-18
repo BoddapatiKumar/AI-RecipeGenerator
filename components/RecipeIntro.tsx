@@ -1,9 +1,36 @@
-import { View, Text, Image, StyleSheet } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import React, { useContext, useState } from "react";
 import Colors from "@/services/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import GlobalApi from "@/services/GlobalApi";
+import { UserContext } from "@/context/UserContext";
 
 const RecipeIntro = ({ recipe }: any) => {
+  const { user } = useContext(UserContext);
+  const [saved, setSaved] = useState(false);
+
+  const saveRecipe = async () => {
+    const data = {
+      userEmail: user?.email,
+      recipeDocId: recipe?.documentId,
+    };
+
+    const result = await GlobalApi.saveUserFavRecipe(data);
+    console.log(result);
+    Alert.alert("Saved to CookBook!");
+    setSaved(true);
+  };
+
+  const removeSavedRecipe=async()=>{
+    
+  }
   return (
     <View>
       <Image
@@ -19,15 +46,31 @@ const RecipeIntro = ({ recipe }: any) => {
           borderRadius: 15,
         }}
       />
-      <Text
+      <View
         style={{
-          fontFamily: "outfit-semibold",
-          fontSize: 18,
-          marginTop: 7,
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
-        {recipe?.recipeName}
-      </Text>
+        <Text
+          style={{
+            fontFamily: "outfit-semibold",
+            fontSize: 18,
+            marginTop: 7,
+          }}
+        >
+          {recipe?.recipeName}
+        </Text>
+        <TouchableOpacity onPress={() => !saved ?saveRecipe():removeSavedRecipe()}>
+          {!saved ? (
+            <Ionicons name="bookmark-outline" size={24} color="black" />
+          ) : (
+            <Ionicons name="bookmark" size={24} color="black" />
+          )}
+        </TouchableOpacity>
+      </View>
       <Text
         style={{
           fontFamily: "outfit-Bold",
@@ -50,10 +93,10 @@ const RecipeIntro = ({ recipe }: any) => {
       <View
         style={{
           marginTop: 10,
-          display:'flex',
-          flexDirection:'row',
-          justifyContent:'space-between',
-          gap:5
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          gap: 5,
         }}
       >
         <View style={styles.featurContainer}>
