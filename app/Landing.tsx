@@ -6,23 +6,16 @@ import { useLogto } from "@logto/rn";
 import { useRouter } from "expo-router";
 import { useContext, useEffect } from "react";
 
-import {
-  Button,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Landing() {
   const { signIn, signOut, isAuthenticated } = useLogto();
   const { getIdTokenClaims } = useLogto();
-  const {user,setUser}=useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
-  const router=useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -43,11 +36,10 @@ export default function Landing() {
             const response = await GlobalApi.createUser(data);
             console.log(response?.data?.data);
             setUser(response?.data?.data);
-            router.replace('/(tabs)/Home');
-          }
-          else{
+            router.replace("/(tabs)/Home");
+          } else {
             setUser((await result)?.data?.data[0]);
-            router.replace('/(tabs)/Home');
+            router.replace("/(tabs)/Home");
           }
         }
       });

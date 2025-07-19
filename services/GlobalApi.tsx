@@ -27,13 +27,23 @@ const createRecipe = (data: any) =>
 const getRecipeByCategory = (category: any) =>
   axiosClient.get("/recipes?filters[category][$contains]=" + category);
 
-const getAllRecipeList=()=>axiosClient.get('/recipes?sort[0]=id:desc');
+const getAllRecipeList = () => axiosClient.get("/recipes?sort[0]=id:desc");
 
-const getAllRecipesByLimit=(limit:any)=>axiosClient.get('/recipes?sort[0]=id:desc&pagination[start]=1&pagination[limit]='+limit);
+const getAllRecipesByLimit = (limit: any) =>
+  axiosClient.get(
+    "/recipes?sort[0]=id:desc&pagination[start]=1&pagination[limit]=" + limit
+  );
 
-const getAllRecipesByEmail=(userEmail:any)=>axiosClient.get('/recipes?filters[userEmail][$eq]='+userEmail+"&sort[0]=id:desc");
+const getAllRecipesByEmail = (userEmail: any) =>
+  axiosClient.get(
+    "/recipes?filters[userEmail][$eq]=" + userEmail + "&sort[0]=id:desc"
+  );
 
-const saveUserFavRecipe=(data:any)=>axiosClient.post('/user-favorites',{data:data});
+const saveUserFavRecipe = (data: any) =>
+  axiosClient.post("/user-favorites", { data: data });
+
+const savedRecipeList = (userEmail: any) =>
+  axiosClient.get("/user-favorites?filters[userEmail][$eq]=" + userEmail);
 
 const AiModel = async (prompt: string) =>
   await openai.chat.completions.create({
@@ -71,5 +81,6 @@ export default {
   getAllRecipeList,
   getAllRecipesByLimit,
   getAllRecipesByEmail,
-  saveUserFavRecipe
+  saveUserFavRecipe,
+  savedRecipeList
 };
